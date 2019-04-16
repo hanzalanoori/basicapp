@@ -29,5 +29,9 @@ Route::get('/messages', function () {
     return view('messages');
 });
 
-Route::get('users/index', 'UserController@index')->name('user.index');
+Route::get('/messages', 'UserController@index')->name('user.index');
+Route::get('/delete/{id}', 'UserController@destroy');
+Route::get('/editMessages/{id}', 'UserController@edit')->name('editMessage');
 Route::post('users/store', 'UserController@store')->name('user.store');
+Route::post('users/update', 'UserController@update')->name('user.update');
+Route::post('users/update/{id}', 'UserController@update')->name('editMessages');

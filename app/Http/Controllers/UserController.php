@@ -47,7 +47,14 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        var_dump($request->all());  
+        
+        $data = $this->validate($request, [
+            'name'=>'required',
+            'email'=> 'required',
+            'number'=>'required',
+            'message'=> 'required'
+        ]);
+       
 
          
           $name = $request->input('name');
@@ -79,7 +86,9 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+       
+        $users = DB::table('contact')->where('id',$id)->get();
+        return view('editMessages', ['users' => $users]);
     }
 
     /**
@@ -91,7 +100,24 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = $this->validate($request, [
+            'name'=>'required',
+            'email'=> 'required',
+            'number'=>'required',
+            'message'=> 'required'
+        ]);
+       
+
+         
+          $name = $request->input('name');
+          $email = $request->input('email');
+          $mobile = $request->input('number');
+          $message = $request->input('message');
+         
+          $data = array('name'=>$name,'email'=>$email,'mobile'=>$mobile,'message'=>$message);
+          DB::table('contact')->where('id',$id)->update($data);
+         return redirect('/messages')->with('success', 'Data is Updated successfully');
+       
     }
 
     /**
@@ -102,6 +128,8 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $users = DB::table('contact')->where('id',$id)->delete();
+        return redirect('/messages')->with('Deleted', 'Data is Deleted successfully');
+
     }
 }
